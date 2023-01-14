@@ -1,35 +1,25 @@
 const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
 
-(function(w) {
+(function (w) {
     function getJsonI18N() {
-        // https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/language
-        
-        const LANGUAGES = [
-            { regex: /^zh\b/, lang: 'zh' },
-            { regex: /^ja\b/, lang: 'ja' },
-            { regex: /.*/, lang: 'en'}
-        ]
-
-        const lang = LANGUAGES.find(l => l.regex.test(navigator.language)).lang
-        
         return $.ajax({
-            url: `./static/i18n/${lang}.json`,
+            url: `./static/i18n/zh.json`,
             dataType: 'json',
             method: 'GET',
             async: false,
             success: data => res = data,
-            error: () => alert('找不到语言文件: ' + lang)
+            error: () => alert('找不到语言文件')
         }).responseJSON
     }
 
     const I18N = getJsonI18N()
 
-    $('[data-i18n]').each(function() {
+    $('[data-i18n]').each(function () {
         const content = I18N[this.dataset.i18n];
         $(this).text(content);
     });
 
-    $('[data-placeholder-i18n]').each(function() {
+    $('[data-placeholder-i18n]').each(function () {
         $(this).attr('placeholder', I18N[this.dataset.placeholderI18n]);
     });
 
@@ -42,7 +32,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         (isDesktop ? '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}' :
             '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
         '</style>');
-    let map = {'d': 1, 'f': 2, 'j': 3, 'k': 4};
+    let map = { 'd': 1, 'f': 2, 'j': 3, 'k': 4 };
     if (isDesktop) {
         document.write('<div id="gameBody">');
         document.onkeydown = function (e) {
@@ -62,12 +52,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
 
     let soundMode = getSoundMode();
 
-    w.init = function() {
+    w.init = function () {
         showWelcomeLayer();
         body = document.getElementById('gameBody') || document.body;
         body.style.height = window.innerHeight + 'px';
         transform = typeof (body.style.webkitTransform) != 'undefined' ? 'webkitTransform' : (typeof (body.style.msTransform) !=
-        'undefined' ? 'msTransform' : 'transform');
+            'undefined' ? 'msTransform' : 'transform');
         transitionDuration = transform.replace(/ransform/g, 'ransitionDuration');
         GameTimeLayer = document.getElementById('GameTimeLayer');
         GameLayer.push(document.getElementById('GameLayer1'));
@@ -95,7 +85,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         return cookie('soundMode') ? cookie('soundMode') : 'on';
     }
 
-    w.changeSoundMode = function() {
+    w.changeSoundMode = function () {
         if (soundMode === 'on') {
             soundMode = 'off';
             $('#sound').text(I18N['sound-off']);
@@ -110,18 +100,18 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         return m === MODE_NORMAL ? I18N['normal'] : (m === MODE_ENDLESS ? I18N['endless'] : I18N['practice']);
     }
 
-    w.changeMode = function(m) {
+    w.changeMode = function (m) {
         mode = m;
         cookie('gameMode', m);
         $('#mode').text(modeToString(m));
     }
 
-    w.readyBtn = function() {
+    w.readyBtn = function () {
         closeWelcomeLayer();
         updatePanel();
     }
 
-    w.winOpen = function() {
+    w.winOpen = function () {
         window.open(location.href + '?r=' + Math.random(), 'nWin', 'height=500,width=320,toolbar=no,menubar=no,scrollbars=no');
         let opened = window.open('about:blank', '_self');
         opened.opener = null;
@@ -175,7 +165,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         _gameBBListIndex = 0,
         _gameOver = false,
         _gameStart = false,
-        _gameSettingNum=20,
+        _gameSettingNum = 20,
         _gameTime, _gameTimeNum, _gameScore, _date1, deviationTime;
 
     let _gameStartTime, _gameStartDatetime;
@@ -254,7 +244,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         }
     }
     //使重试按钮获得焦点
-    function foucusOnReplay(){
+    function foucusOnReplay() {
         $('#replay').focus()
     }
 
@@ -443,7 +433,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         l.attr('class', l.attr('class').replace(/bgc\d/, 'bgc' + c));
         $('#GameScoreLayer-text').html(shareText(cps));
         let normalCond = legalDeviationTime() || mode !== MODE_NORMAL;
-        l.css('color', normalCond ? '': 'red');
+        l.css('color', normalCond ? '' : 'red');
 
         $('#cps').text(cps.toFixed(2));
         $('#score').text(scoreToString(score));
@@ -457,12 +447,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         $('#GameScoreLayer').css('display', 'none');
     }
 
-    w.replayBtn = function() {
+    w.replayBtn = function () {
         gameRestart();
         hideGameScoreLayer();
     }
 
-    w.backBtn = function() {
+    w.backBtn = function () {
         gameRestart();
         hideGameScoreLayer();
         showWelcomeLayer();
@@ -480,7 +470,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
 
         if (cps <= 5) return I18N['text-level-1'];
         if (cps <= 8) return I18N['text-level-2'];
-        if (cps <= 10)  return I18N['text-level-3'];
+        if (cps <= 10) return I18N['text-level-3'];
         if (cps <= 15) return I18N['text-level-4'];
         return I18N['text-level-5'];
     }
@@ -506,7 +496,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             }
             return value = document.cookie.match("(?:^|;)\\s*" + name.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1") + "=([^;]*)"),
                 value = value && "string" == typeof value[1] ? unescape(value[1]) : !1, (/^(\{|\[).+\}|\]$/.test(value) ||
-                /^[0-9]+$/g.test(value)) && eval("value=" + value), value;
+                    /^[0-9]+$/g.test(value)) && eval("value=" + value), value;
         }
         let data = {};
         value = document.cookie.replace(/\s/g, "").split(";");
@@ -519,10 +509,6 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     function initSetting() {
         $("#username").val(cookie("username") ? cookie("username") : "");
         $("#message").val(cookie("message") ? cookie("message") : "");
-        if (cookie("title")) {
-            $('title').text(cookie('title'));
-            $('#title').val(cookie('title'));
-        }
         let keyboard = cookie('keyboard');
         if (keyboard) {
             keyboard = keyboard.toString().toLowerCase();
@@ -540,22 +526,22 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         }
     }
 
-    w.show_btn = function() {
+    w.show_btn = function () {
         $("#btn_group,#desc").css('display', 'block')
         $('#setting').css('display', 'none')
     }
 
-    w.show_setting = function() {
+    w.show_setting = function () {
         $('#btn_group,#desc').css('display', 'none')
         $('#setting').css('display', 'block')
         $('#sound').text(soundMode === 'on' ? I18N['sound-on'] : I18N['sound-off']);
     }
 
-    w.save_cookie = function() {
-        const settings = ['username', 'message', 'keyboard', 'title', 'gameTime'];
+    w.save_cookie = function () {
+        const settings = ['username', 'message', 'keyboard', 'gameTime'];
         for (let s of settings) {
-            let value=$(`#${s}`).val();
-            if(value){
+            let value = $(`#${s}`).val();
+            if (value) {
                 cookie(s, value.toString(), 100);
             }
         }
@@ -567,7 +553,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         return str === '' || str === undefined || str == null;
     }
 
-    w.goRank = function() {
+    w.goRank = function () {
         let name = $("#username").val();
         let link = './rank.php';
         if (!isnull(name)) {
@@ -604,7 +590,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     function saveImage(dom, callback) {
         if (dom.files && dom.files[0]) {
             let reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function () {
                 callback(this.result);
             }
             reader.readAsDataURL(dom.files[0]);
@@ -612,11 +598,11 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     }
 
 
-    w.getClickBeforeImage = function() {
+    w.getClickBeforeImage = function () {
         $('#click-before-image').click();
     }
 
-    w.saveClickBeforeImage = function() {
+    w.saveClickBeforeImage = function () {
         const img = document.getElementById('click-before-image');
         saveImage(img, r => {
             clickBeforeStyle.html(`
@@ -627,11 +613,11 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         })
     }
 
-    w.getClickAfterImage = function() {
+    w.getClickAfterImage = function () {
         $('#click-after-image').click();
     }
 
-    w.saveClickAfterImage = function() {
+    w.saveClickAfterImage = function () {
         const img = document.getElementById('click-after-image');
         saveImage(img, r => {
             clickAfterStyle.html(`
@@ -641,4 +627,4 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             }`);
         })
     }
-}) (window);
+})(window);
