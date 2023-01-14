@@ -1,3 +1,3 @@
 # 吃掉坤坤
 
-[Github Pages](https://arcxingye.github.io/EatKano/index.html)
+[Github Pages](https://dreamhunter2333.com/EatKunkun/)
